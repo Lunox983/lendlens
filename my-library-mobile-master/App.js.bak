@@ -1,0 +1,69 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Text } from 'react-native';
+
+// Import หน้าทั้งหมดที่คุณเพิ่งสร้างไว้
+import Login from './src/pages/Login';
+import Home from './src/pages/Home';
+import Search from './src/pages/Search';
+import Cart from './src/pages/Cart';
+import Status from './src/pages/Status';
+import Settings from './src/pages/Settings';
+import Detail from './src/pages/Detail';
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+// --------------------------------------------------
+// 1. สร้างแถบเมนูด้านล่าง (Bottom Tabs)
+// --------------------------------------------------
+function MainTabs() {
+  return (
+    <Tab.Navigator 
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: '#3D2B56', // สีตอนที่กดเลือกเมนู
+        tabBarInactiveTintColor: '#888',
+        tabBarStyle: { height: 60, paddingBottom: 10, paddingTop: 5 },
+        // ใส่ Icon ง่ายๆ แทนรูปภาพไปก่อน
+        tabBarIcon: ({ color }) => {
+          let icon = '';
+          if (route.name === 'Home') icon = '🏠';
+          else if (route.name === 'Search') icon = '🔍';
+          else if (route.name === 'Cart') icon = '🛒';
+          else if (route.name === 'Status') icon = '📋';
+          else if (route.name === 'Settings') icon = '⚙️';
+          return <Text style={{ fontSize: 20, color: color }}>{icon}</Text>;
+        }
+      })}
+    >       
+      <Tab.Screen name="Home" component={Home} options={{ tabBarLabel: 'หน้าหลัก' }} />
+      <Tab.Screen name="Search" component={Search} options={{ tabBarLabel: 'ค้นหา' }} />
+      <Tab.Screen name="Cart" component={Cart} options={{ tabBarLabel: 'ตะกร้า' }} />
+      <Tab.Screen name="Status" component={Status} options={{ tabBarLabel: 'สถานะ' }} />
+      <Tab.Screen name="Settings" component={Settings} options={{ tabBarLabel: 'ตั้งค่า' }} />
+    </Tab.Navigator>
+  );
+}
+
+// --------------------------------------------------
+// 2. สร้างโครงสร้างหลักของแอป (Stack Navigator)
+// --------------------------------------------------
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {/* หน้า Login เป็นหน้าแรกสุด */}
+        <Stack.Screen name="Login" component={Login} />
+        
+        {/* เมื่อ Login ผ่าน จะกระโดดมาที่ MainTabs (ที่มีเมนูด้านล่าง) */}
+        <Stack.Screen name="MainTabs" component={MainTabs} />
+        
+        {/* หน้า Detail เป็นหน้าย่อย (ไม่มีแถบเมนูด้านล่าง) */}
+        <Stack.Screen name="Detail" component={Detail} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
