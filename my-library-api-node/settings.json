@@ -1,0 +1,10 @@
+{
+  "emailNotifications": {
+    "onApprove": true,
+    "onReturn": true,
+    "onOverdue": true,
+    "onQueue": true,
+    "onManualAnnounce": true,
+    "enabled": true
+  }
+}

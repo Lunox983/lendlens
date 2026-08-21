@@ -1,0 +1,2 @@
+const pool = require('./db');
+pool.query("SELECT e.*, (SELECT COUNT(*) FROM equipment_items WHERE equipment_id = e.equipment_id AND status = 'available') AS available_quantity, (SELECT COUNT(*) FROM equipment_queue WHERE equipment_id = e.equipment_id AND status IN ('waiting', 'called')) AS queue_count FROM equipments e").then(() => console.log('OK')).catch(e => console.error(e.message)).finally(() => process.exit());
